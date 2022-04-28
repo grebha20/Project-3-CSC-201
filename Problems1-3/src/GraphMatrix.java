@@ -168,24 +168,42 @@ public class GraphMatrix implements Graph
 
         ArrayList<Integer> topo= new ArrayList<>();
 
-        //finds a Node that has no pointers towards it
-        boolean intake=false;
+        //finds Node that have no pointers towards it
         int i=0;
-        while(intake==false && i<array.length)
+        boolean in=false;
+        while(i<array.length)
         {
             for(int j=0; j<array.length;j++)
             {
                 if(array[i][j]>0)
                 {
-                    intake=true;
+                    in=true;
                 }
             }
+            if(in==true)
+            {
+                topo.add(i);
+            }
+
             i++;
+            in=false;
+
         }
 
-        topo.add(i);
-        int[] list= neighbors(i);
-        Visited[i]=true;
+        for(int j=0; j<topo.size();j++)
+        {
+            int[] list= neighbors(j);
+            Visited[j]=true;
+
+            for(int k=0; k<list.length;k++)
+            {
+                if(Visited[list[k]]==false)
+                {
+                    Visited[list[i]]=true;
+                    topo.add(list[i]);
+                }
+            }
+        }
 
         boolean allVisited=false;
         while(allVisited==false)
